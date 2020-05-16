@@ -1,3 +1,13 @@
+const ORIGIN = "/ServiceWorker-test/";
+const CACHE_NAME = "v2";
+var arrCacheList = [
+	"res/blue.png",
+	"money.m4a"
+].map(function (val) {
+	// リストの全要素の頭に文字列を追加
+	return ORIGIN + val;
+});
+
 // Service Workerのinstallイベント
 // 既にインストールが終わっている場合は発火しない。
 self.addEventListener("install", function (event) {
@@ -6,11 +16,8 @@ self.addEventListener("install", function (event) {
 	// キャッシュする。
 	// キャッシュが完了するまでインストールを完了しないようにするのがwaitUntil
 	event.waitUntil(
-		caches.open("v1").then(function (cache) {
-			return cache.addAll([
-				"/ServiceWorker-test/res/blue.png",
-				"/ServiceWorker-test/res/money.m4a"
-			]);
+		caches.open(CACHE_NAME).then(function (cache) {
+			return cache.addAll(arrCacheList);
 		})
 	);
 });
@@ -35,7 +42,7 @@ self.addEventListener("fetch", function (event) {
 
 			// リクエストを作る
 			fetch(event.request).then(function (response) {
-				return caches.open("v1").then(function (cache) {
+				return caches.open(CACHE_NAME).then(function (cache) {
 					// レスポンスをキャッシュする
 					// これで、次のレスポンスの際にはキャッシュから返せるようにする
 					cache.put(event.request, response.clone());
