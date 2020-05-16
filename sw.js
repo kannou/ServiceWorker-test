@@ -2,11 +2,12 @@ const ORIGIN = "/ServiceWorker-test/";
 const CACHE_NAME = "v2";
 var arrCacheList = [
 	"res/blue.png",
-	"money.m4a"
+	"res/money.m4a"
 ].map(function (val) {
 	// リストの全要素の頭に文字列を追加
 	return ORIGIN + val;
 });
+
 
 // Service Workerのinstallイベント
 // 既にインストールが終わっている場合は発火しない。
