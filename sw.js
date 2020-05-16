@@ -8,7 +8,8 @@ self.addEventListener("install", function (event) {
 	event.waitUntil(
 		caches.open("v1").then(function (cache) {
 			return cache.addAll([
-				"/ServiceWorker-test/res/blue.png"
+				"/ServiceWorker-test/res/blue.png",
+				"/ServiceWorker-test/res/money.m4a"
 			]);
 		})
 	);
