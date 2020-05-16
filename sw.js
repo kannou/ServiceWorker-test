@@ -7,9 +7,8 @@ self.addEventListener("install", function (event) {
 	// キャッシュが完了するまでインストールを完了しないようにするのがwaitUntil
 	event.waitUntil(
 		caches.open("v1").then(function (cache) {
-			const ORIlGIN = "/ServiceWorker-test"
 			return cache.addAll([
-				ORIGIN + "blue.png"
+				ORIGIN + "/ServiceWorker-test/res/blue.png"
 			]);
 		})
 	);
