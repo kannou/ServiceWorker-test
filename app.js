@@ -1,6 +1,6 @@
-const ORIGIN = "/ServieWorker-test";
+const ORIGIN = "/ServiceWorker-test";
 
-if (!navigator.serviceWorker) return;
+// if (!navigator.serviceWorker) return;
 
 // SWの登録を行う。登録の後でインストールされる。ここでparsed状態に入るってことか。
 // register関数の第2引数でscopeを指定できる(scopeとなる範囲のルートを指定する)。
