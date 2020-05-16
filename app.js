@@ -1,5 +1,4 @@
-// const ORIGIN = "/ServiceWorker-test";
-const ORIGIN = "";
+const ORIGIN = "/ServiceWorker-test";
 
 if (navigator.serviceWorker) {
 	// SWの登録を行う。登録の後でインストールされる。ここでparsed状態に入るってことか。
