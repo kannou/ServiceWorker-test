@@ -1,6 +1,20 @@
+// sw.jsファイルが更新されていると、ServiceWorkerが更新される。
+// これでinstalling状態になる。
+// 既にSWがinstallされている場合は、installing状態の後にwaiting状態に移行する。
+// その後でページが閉じられたりすると、waiting > activating > activated と移行する。
+// つまりwebアプリの更新をかけたあとは、普通にやるとユーザ側で操作しないとリソースの更新ができないといことになる。
+
+// activatedになった後でも、SWは
+
+// 更新がない & インストール済の場合は、installing > activated と移行する
+
+
+
 const ORIGIN = "/ServiceWorker-test/";
-const CACHE_NAME = "v2";
+const CACHE_NAME = "cache-v2";
 var arrCacheList = [
+	"index.html",
+	"app.js",
 	"res/blue.png",
 	"res/money.m4a"
 ].map(function (val) {
@@ -21,13 +35,30 @@ self.addEventListener("install", function (event) {
 			return cache.addAll(arrCacheList);
 		})
 	);
+
 });
 
 // activateイベント
 // SWを既に有効にしてある場合は発火しない。
 self.addEventListener("activate", function (event) {
 	console.info("activate", event);
+
+	// 古いキャッシュを削除する。
+	event.waitUntil(
+		caches.keys().then(function (cacheNames) {
+			return Promise.all(
+				cacheNames.map(function (cacheName) {
+					if (cacheName != CACHE_NAME) {
+						return caches.delete(cacheName);
+					}
+				})
+			);
+		})
+	);
+
+
 });
+
 
 // fetchイベント
 // activated状態なら、このイベントが発火する。
@@ -42,7 +73,8 @@ self.addEventListener("fetch", function (event) {
 			if (cacheStorage) return cacheStorage;
 
 			// リクエストを作る
-			fetch(event.request).then(function (response) {
+			var fetchRequest = event.request.clone();
+			fetch(fetchRequest).then(function (response) {
 				return caches.open(CACHE_NAME).then(function (cache) {
 					// レスポンスをキャッシュする
 					// これで、次のレスポンスの際にはキャッシュから返せるようにする
