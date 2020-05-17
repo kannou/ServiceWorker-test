@@ -14,7 +14,7 @@ if (navigator.serviceWorker) {
 			console.log("SWの登録失敗:" + e);
 		});
 
-	const registration = await navigator.serviceWorker.getRegistration();
+	const registration = navigator.serviceWorker.getRegistration();
 	registration.update();
 }
 
